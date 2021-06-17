@@ -56,7 +56,7 @@ namespace CornerDetector {
 
         // Math.atan2(deltaY, deltaX)
         mrpt_msgs::ObservationRangeBearing points;
-        points.header.frame_id = "base_link";
+        points.header.frame_id = "base_scan";
         for (AccumulateFeatures::Features features:accumulate_features.old_f) {
             std::vector<float> xy = {robot_tf_.position.x, robot_tf_.position.y};
             float r = VectorUtils::GetTwoPointsDistance(xy, features.f);

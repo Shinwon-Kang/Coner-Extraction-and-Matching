@@ -56,7 +56,7 @@ namespace CornerDetector
 
     void Visualization::EPCCMarker(LineClustering lc) {
         visualization_msgs::Marker epcc;
-        epcc.header.frame_id = "/base_link";
+        epcc.header.frame_id = "/base_scan";
         epcc.header.stamp = ros::Time::now();
         epcc.ns = "breakpoint_detector";
         epcc.action = visualization_msgs::Marker::ADD;
@@ -94,7 +94,7 @@ namespace CornerDetector
     }
 
     void Visualization::EPCCMarker_v2(std::vector<LineClustering::Line> cluster_lines, visualization_msgs::Marker &epcc) {
-        epcc.header.frame_id = "/base_link";
+        epcc.header.frame_id = "/base_scan";
         epcc.header.stamp = ros::Time::now();
         epcc.ns = "breakpoint_detector";
         epcc.action = visualization_msgs::Marker::ADD;
@@ -141,7 +141,7 @@ namespace CornerDetector
     }
 
     void Visualization::DownsamplingMarker(std::vector<Eigen::Vector2f> cluster_points, visualization_msgs::Marker &down) {
-        down.header.frame_id = "/base_link";
+        down.header.frame_id = "/base_scan";
         down.header.stamp = ros::Time::now();
         down.ns = "breakpoint_detector";
         down.action = visualization_msgs::Marker::ADD;
@@ -174,7 +174,7 @@ namespace CornerDetector
     }
 
     void Visualization::EPCCCornerMarker(std::vector<std::vector<float>> corner_points, visualization_msgs::Marker &corner) {
-        corner.header.frame_id = "/base_lnk";
+        corner.header.frame_id = "/base_scan";
         corner.header.stamp = ros::Time::now();
         corner.ns = "breakpoint_detector";
         corner.action = visualization_msgs::Marker::ADD;
@@ -203,7 +203,7 @@ namespace CornerDetector
     }
 
     void Visualization::TempMarker(std::vector<std::vector<float>> temp, visualization_msgs::Marker &tmp) {
-        tmp.header.frame_id = "/base_link";
+        tmp.header.frame_id = "/base_scan";
         tmp.header.stamp = ros::Time::now();
         tmp.ns = "breakpoint_detector";
         tmp.action = visualization_msgs::Marker::ADD;
