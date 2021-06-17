@@ -1,0 +1,6 @@
+image: skku7th.pgm
+resolution: 0.100000
+origin: [0, -77.5, 0]
+negate: 0
+occupied_thresh: 0.5
+free_thresh: 0.2

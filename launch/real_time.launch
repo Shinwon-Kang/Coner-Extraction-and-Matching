@@ -1,0 +1,38 @@
+<launch>
+    <arg name="map_file" default="$(find corner_detector)/maps/skku7th.yaml"/>
+
+    <param name="use_sim_time" value="false"/>
+
+    <param name="use_2d_lidar" value="true"/>
+    <param name="file_path_points" type="str" value="/home/nvidia/catkin_ws/src/Corner-Detection/data/point_database2.txt"/>
+    <param name="file_path_lines" type="str" value="/home/nvidia/catkin_ws/src/corner_detector/data/line_database.txt"/>
+
+<!--    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find corner_detector)/default.rviz"/>  -->>
+
+	<!-- TF Broadcaster (map to laser) -->
+	<node pkg="corner_detector" type="TfBroadcaster" name="TfBroadcaster" output="screen"/>
+
+	<!-- Run rplidar -->
+<!--  	<node name="rplidarNode" pkg="rplidar_ros" type="rplidarNode" output="screen">
+  		<param name="serial_port"         type="string" value="/dev/ttyUSB0"/>  
+  		<param name="serial_baudrate"     type="int"    value="115200"/>
+  		<param name="frame_id"            type="string" value="laser"/>
+  		<param name="inverted"            type="bool"   value="false"/>
+  		<param name="angle_compensate"    type="bool"   value="true"/>
+	</node>
+-->
+
+    <!-- Run Feature Extraction Algorithm -->
+    <node pkg="corner_detector" type="Detector" name="Detector" output="screen"/>
+
+    <!-- point publisher -->
+    <node pkg="corner_detector" type="PointPublisher.py" name="PointPublisher" output="screen"/>
+    <!-- line publisher -->
+    <!-- <node pkg="corner_detector" type="LinePublisher.py" name="LinePublisher" output="screen"/>	-->
+	
+    <!-- Map server 
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)">
+    </node>-->
+
+    <!-- node pkg="localization_algorithm" name="localization_algorithm_node" type="localization_algorithm_node" output="screen"/ -->
+</launch>

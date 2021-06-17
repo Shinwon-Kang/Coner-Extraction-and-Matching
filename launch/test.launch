@@ -1,0 +1,23 @@
+<launch>
+    <param name="use_sim_time" value="true"/>
+
+    <param name="use_2d_lidar" value="true"/>
+    <param name="file_path_points" type="str" value="/home/shjoo/catkin_ws/src/Corner-Detection/data/point_database.txt"/>
+    <param name="file_path_lines" type="str"  value="/home/shjoo/catkin_ws/src/Corner-Detection/data/line_database.txt"/>
+    
+
+    <node pkg="rviz" type="rviz" name="rviz"/>
+
+    <node pkg="corner_detector" type="Detector" name="Detector" output="screen"/>
+
+    <!-- point publisher -->
+    <!-- <node pkg="corner_detector" type="PointPublisher.py" name="PointPublisher" output="screen"/> -->
+    <!-- line publisher -->
+    <!-- <node pkg="corner_detector" type="LinePublisher.py" name="LinePublisher" output="screen"/> -->
+
+    <arg name="bag_path" default="/home/shjoo/HDD/Dataset/SKKU"/>
+    <arg name="bag_file" default="7th.bag"/>
+    <!-- <arg name="bag_path" default="/home/shjoo/catkin_ws/src/Corner-Detection/data"/> -->
+    <!-- <arg name="bag_file" default="senven_floor_2.bag"/> -->
+    <node pkg="rosbag" type="play" name="rosbag_play" args="--clock -l $(arg bag_path)/$(arg bag_file)"/>
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+    <param name="use_sim_time" value="true"/>
+
+    <param name="use_2d_lidar" value="true"/>
+    <!--
+    <param name="file_path_points" type="str" value="/home/shjoo/catkin_ws/src/Corner-Detection/data/point_database.txt"/>
+    <param name="file_path_lines" type="str"  value="/home/shjoo/catkin_ws/src/Corner-Detection/data/line_database.txt"/>
+    -->
+
+    <node pkg="corner_detector" type="Detector" name="Detector" output="screen"/>
+
+
+</launch>
