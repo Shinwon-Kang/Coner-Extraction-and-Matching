@@ -21,6 +21,7 @@ namespace CornerDetector {
             lidar_data = n.subscribe<sensor_msgs::LaserScan>("/scan", 1, &RobotState::LaserScanCallback, this);
         } else {
             lidar_data = n.subscribe<sensor_msgs::PointCloud2>("/velodyne_points", 1, &RobotState::PointCloud2Callback, this);
+            // lidar_data = n.subscribe<sensor_msgs::PointCloud2>("/velodyne_points", 1, &RobotState::GatherSpecificRingPoints_3DVersion, this);
         }
         while(ros::ok()) {
             ros::spin();
@@ -44,38 +45,31 @@ namespace CornerDetector {
         geometry_msgs::Pose robot_tf_ = robot_tf;
         // ACCUMULATE FEATURES
         accumulate_features.Run(line_clustering.corner_points,
-                                robot_tf,
+                                robot_tf_,
                                 robot_velodyne_tf_x,
                                 robot_velodyne_tf_y);
 
         // VISUALIZATION
-        visualization_msgs::Marker corner;
+        visualization_msgs::Marker epcc, down, corner, tmp;
         CornerDetector::Visualization vs;
         vs.vis(accumulate_features.old_f, corner);
+
         marker_EPCC_corner.publish(corner);
 
         // Math.atan2(deltaY, deltaX)
         mrpt_msgs::ObservationRangeBearing points;
         points.header.frame_id = "base_scan";
         for (AccumulateFeatures::Features features:accumulate_features.old_f) {
-            std::vector<float> xy = {robot_tf_.position.x, robot_tf_.position.y};
+            float rx = robot_tf_.position.x;
+            float ry = robot_tf_.position.y;
+            std::vector<float> xy = {rx, ry};
             float r = VectorUtils::GetTwoPointsDistance(xy, features.f);
-
-            tf::Quaternion q(
-                robot_tf_.orientation.x,
-                robot_tf_.orientation.y,
-                robot_tf_.orientation.z,
-                robot_tf_.orientation.w);
-            tf::Matrix3x3 m(q);
-            double roll, pitch, yaw;
-            m.getRPY(roll, pitch, yaw);
             
-            double theta = std::atan2(features.f[1] - xy[1], features.f[0] - xy[0]);
-            std::cout << yaw << ", " << theta << std::endl;
+            double theta = robot_tf_.orientation.z + std::atan2(features.f[1] - xy[1], features.f[0] - xy[0]);
 
             mrpt_msgs::SingleRangeBearingObservation p;
             p.range = r;
-            p.yaw = theta + yaw;
+            p.yaw = theta;
 
             // Not use
             p.pitch = 0;
@@ -160,8 +154,8 @@ namespace CornerDetector {
                 robot_tf.position.y = transform_robot.getOrigin().getY();
                 robot_tf.position.z = transform_robot.getOrigin().getZ();
                 robot_tf.orientation.z = tf::getYaw(transform_robot.getRotation());
-
                 tf_initialization = true;
+
             } catch (tf::TransformException &ex) {
                 ROS_WARN("%s",ex.what());
                 ros::Duration(1.0).sleep();

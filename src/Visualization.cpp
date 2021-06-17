@@ -24,6 +24,10 @@ namespace CornerDetector
 
         // Corner Point
         EPCCCornerMarker(line_clustering.corner_points, corner);
+
+        // TODO: remove this
+        // TempMarker(line_clustering.temp, tmp);
+
     }
 
     void Visualization::vis(std::vector<AccumulateFeatures::Features> old_f, visualization_msgs::Marker &corner) {

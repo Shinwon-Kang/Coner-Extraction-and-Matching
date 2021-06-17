@@ -255,8 +255,23 @@ namespace CornerDetector
                     temp.push_back(p_2_1);
                     temp.push_back(p_2_2);
                 }
+
+
+                // float px = (eq_1[1] * eq_2[2] - eq_2[1] * eq_1[2]) / (eq_1[0] * eq_2[1] - eq_2[0] * eq_1[1]);
+                // float py = -(eq_1[0] / eq_1[1]) * (px) - (eq_1[2] / eq_1[1]);
+
+                // float gradient_1 = -(eq_1[0] / eq_1[1]);
+                // float gradient_2 = -(eq_2[0] / eq_2[1]);
+                // float diff_gradient = fabsf(gradient_1 - gradient_2);
+                // if(diff_gradient > 3) {
+                //     std::cout << "diff : " << diff_gradient << std::endl;
+                //     std::vector<float> p = {px, py};
+
+                //     corner_points.push_back(p);
+                // }
             }
         }
+        // std::cout << corner_points.size() << std::endl;
     }
 
     float LineClustering::GetTwoLineAngle(Line line1, Line line2) {

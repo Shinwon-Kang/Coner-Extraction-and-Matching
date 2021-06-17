@@ -1,5 +1,5 @@
 <launch>
-    <param name="use_sim_time" value="true"/>
+    <param name="use_sim_time" value="false"/>
 
     <param name="use_2d_lidar" value="true"/>
     <!--
