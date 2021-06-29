@@ -43,22 +43,48 @@ namespace CornerDetector {
         line_clustering.DetermineCorner();
 
         geometry_msgs::Pose robot_tf_ = robot_tf;
+
+        /*
         // ACCUMULATE FEATURES
         accumulate_features.Run(line_clustering.corner_points,
                                 robot_tf_,
                                 robot_velodyne_tf_x,
                                 robot_velodyne_tf_y);
+        */
 
         // VISUALIZATION
         visualization_msgs::Marker epcc, down, corner, tmp;
         CornerDetector::Visualization vs;
-        vs.vis(accumulate_features.old_f, corner);
+        
+        vs.Run(line_clustering, epcc, down, corner, tmp);
+        // vs.vis(accumulate_features.old_f, corner);
 
         marker_EPCC_corner.publish(corner);
 
         // Math.atan2(deltaY, deltaX)
         mrpt_msgs::ObservationRangeBearing points;
-        points.header.frame_id = "base_scan";
+        // points.header.frame_id = "base_scan";
+        points.header.frame_id = "base_link";
+        
+        for (std::vector<float> point:line_clustering.corner_points) {
+            std::vector<float> xy = {0.0, 0.0};
+            float r = VectorUtils::GetTwoPointsDistance(xy, point);
+            std::cout << r << std::endl;
+            
+            double theta = std::atan2(point[1] - xy[1], point[0] - xy[0]);
+
+            mrpt_msgs::SingleRangeBearingObservation p;
+            p.range = r;
+            p.yaw = theta;
+
+            // Not use
+            p.pitch = 0;
+            p.id = 0;
+
+            points.sensed_data.push_back(p);
+        }
+
+        /*
         for (AccumulateFeatures::Features features:accumulate_features.old_f) {
             float rx = robot_tf_.position.x;
             float ry = robot_tf_.position.y;
@@ -77,6 +103,8 @@ namespace CornerDetector {
 
             points.sensed_data.push_back(p);
         }
+        */
+
         corner_rt.publish(points);
     }
 

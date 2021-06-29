@@ -17,7 +17,7 @@ namespace CornerDetector
                             visualization_msgs::Marker &tmp) {
 
         // EPCC Line Clustering
-        EPCCMarker_v2(line_clustering.cluster_lines, epcc);
+        // EPCCMarker_v2(line_clustering.cluster_lines, epcc);
 
         // DownSampling Point
         // DownsamplingMarker(line_clustering.cluster_points, down);
